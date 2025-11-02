@@ -30,8 +30,8 @@ public class DragMove : MonoBehaviour
         {
             move.Normalize();
             gameObject.transform.rotation *= Quaternion.Euler(
-                    Mathf.Atan2(move.y, 80) * Mathf.Rad2Deg,
-                    Mathf.Atan2(-move.x, 80) * Mathf.Rad2Deg,
+                    Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg,
+                    Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg,
                     0);
         }
         // camera mode
