@@ -7,6 +7,7 @@ public class DragMove : MonoBehaviour
     [SerializeField] private bool isDragging;
     [SerializeField] public bool cameraToggle;
     [SerializeField] public float cameraSpeed;
+    [SerializeField] public float moveSpeed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,26 +25,68 @@ public class DragMove : MonoBehaviour
         isDragging = Input.GetMouseButton(0);
 
         // mouse drag vector 
-        Vector3 move = mousePos - prevMousePos;
+        Vector3 move = mousePos - prevMousePos - gameObject.transform.forward;
         
         // rotate object
         if (isDragging && !cameraToggle)
         {
             move.Normalize();
-            gameObject.transform.rotation *= Quaternion.Euler(
-                    Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg,
-                    Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg,
-                    Mathf.Atan2(move.z, 100) * Mathf.Rad2Deg);
-            
+            // left-right
+            if (gameObject.transform.position.x > -45 && gameObject.transform.position.x < 45)
+            {
+                gameObject.transform.rotation *= Quaternion.Euler(
+                    0,
+                    Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg * moveSpeed,
+                    0);
+            }
+            else if (gameObject.transform.position.x >= -135 && gameObject.transform.position.x <= 135)
+            {
+                gameObject.transform.rotation *= Quaternion.Euler(
+                   0,
+                   0,
+                   Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg * moveSpeed);
+            }
+            else
+            {
+                gameObject.transform.rotation *= Quaternion.Euler(
+                    0,
+                    Mathf.Atan2(move.x, 100) * Mathf.Rad2Deg * moveSpeed,
+                    0);
+            }
+
+            // up-down
+            if (gameObject.transform.position.y > -45 && gameObject.transform.position.y < 45)
+            {
+                gameObject.transform.rotation *= Quaternion.Euler(
+                    Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg * moveSpeed,
+                    0,
+                    0);
+            }
+            else if (gameObject.transform.position.y >= -135 && gameObject.transform.position.y <= 135)
+            {
+                gameObject.transform.rotation *= Quaternion.Euler(
+                    0,
+                    0,
+                    -Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg * moveSpeed);
+            }
+            else
+            {
+                gameObject.transform.rotation *= Quaternion.Euler(
+                    -Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg * moveSpeed,
+                    0,
+                    0);
+            }
+
+            //gameObject.transform.rotation *= Quaternion.Euler(
+            //        Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg * 2,
+            //        Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg,
+            //        Mathf.Atan2(move.z, 100) * Mathf.Rad2Deg);
+            localPos.transform.rotation *= gameObject.transform.rotation;
+            gameObject.transform.rotation = Quaternion.identity;
         }
         // camera mode
         else if (isDragging && cameraToggle) {
             Camera.main.transform.position += -move * Time.deltaTime * cameraSpeed;
-        }
-        else
-        {
-            localPos.transform.rotation *= gameObject.transform.rotation;
-            gameObject.transform.rotation = Quaternion.identity;
         }
         prevMousePos = mousePos;
     }
