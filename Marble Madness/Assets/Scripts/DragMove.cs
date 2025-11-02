@@ -6,6 +6,7 @@ public class DragMove : MonoBehaviour
     [SerializeField] private Vector3 prevMousePos;
     [SerializeField] private bool isDragging;
     [SerializeField] public bool cameraToggle;
+    [SerializeField] public float cameraSpeed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,11 +33,11 @@ public class DragMove : MonoBehaviour
             gameObject.transform.rotation *= Quaternion.Euler(
                     Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg,
                     Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg,
-                    0);
+                    Mathf.Atan2(move.z, 100) * Mathf.Rad2Deg);
         }
         // camera mode
         else if (isDragging && cameraToggle) {
-            Camera.main.transform.position += -move * Time.deltaTime;
+            Camera.main.transform.position += -move * Time.deltaTime * cameraSpeed;
         }
         else
         {
