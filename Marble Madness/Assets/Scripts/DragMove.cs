@@ -34,6 +34,7 @@ public class DragMove : MonoBehaviour
                     Mathf.Atan2(move.y, 100) * Mathf.Rad2Deg,
                     Mathf.Atan2(-move.x, 100) * Mathf.Rad2Deg,
                     Mathf.Atan2(move.z, 100) * Mathf.Rad2Deg);
+            
         }
         // camera mode
         else if (isDragging && cameraToggle) {

@@ -18,7 +18,7 @@ public class ResetPuzzle : MonoBehaviour
         ballState = ballReference.currentPosition;
         if (ballState.y < -25.0)
         {
-            transform.position = spawnPoint;
+            ballReference.marble.transform.position = spawnPoint;
             puzzle.transform.rotation = Quaternion.identity;
             ballReference.marble.linearVelocity = Vector3.zero;
             ballReference.marble.angularVelocity = Vector3.zero;
